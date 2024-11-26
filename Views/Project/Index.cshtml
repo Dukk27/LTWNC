@@ -1,0 +1,195 @@
+@model IEnumerable<WNC_G13.Models.Project>
+@{
+    ViewBag.Title = "Quản lý Dự Án";
+    var organizationId = ViewBag.OrganizationId;
+}
+
+<link rel="stylesheet" href="~/css/backlog.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('.alert').fadeOut('slow');
+        }, 2000); // Ẩn thông báo sau 2 giây
+    </script>
+}
+
+<div class="container-fluid">
+    <!-- Sidebar -->
+    <div class="row">
+        <div class="col-md-3 sidebar bg-light">
+            @if (Model != null && Model.FirstOrDefault() != null && Model.FirstOrDefault().Organization != null)
+            {
+                <h5 class="sidebar-header">@Html.DisplayFor(m => m.FirstOrDefault().Organization.Name)</h5>
+            }
+            else
+            {
+                <h5 class="sidebar-header">Không có Tổ Chức</h5>
+            }
+
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Chọn Tổ Chức
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach (var org in ViewBag.Organizations as SelectList)
+                    {
+                        <a class="dropdown-item"
+                            href="@Url.Action("Index", new { organizationId = org.Value })">@org.Text</a>
+                    }
+                </div>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="@Url.Action("Index", new { organizationId })">
+                        <i class="fas fa-project-diagram"></i> Danh Sách Dự Án
+                    </a>
+                </li>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="@Url.Action("ApproveReports", "ProgressReport", new { projectId = ViewBag.ProjectId })">
+                            <i class="fas fa-check-circle"></i> Duyệt Báo Cáo CV
+                            @if (ViewBag.UnreadReportsCount > 0)
+                            {
+                                <span class="badge badge-danger">@ViewBag.UnreadReportsCount</span>
+                            }
+                        </a>
+                    </li>
+                }
+
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Board", "ProjectTask")">
+                        <i class="fas fa-chart-bar"></i> Thống Kê Dự Án
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Chat", new { channelId = 1 })">
+                        <i class="fas fa-comments"></i> Trò Chuyện
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Notification")">
+                        <i class="fas fa-bell"></i> Thông Báo
+                        @if (ViewBag.UnreadNotificationCount > 0)
+                        {
+                            <span class="badge badge-danger">@ViewBag.UnreadNotificationCount</span>
+                        }
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Document")">
+                        <i class="fas fa-folder"></i> Tài Liệu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Setting", "Account")">
+                        <i class="fas fa-cogs"></i> Cài Đặt
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>Danh Sách Dự Án</h3>
+                <div>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="@Url.Action("Create", new { organizationId })" class="btn btn-primary">+ Thêm Dự Án</a>
+                    }
+                </div>
+            </div>
+
+            <div class="task-status mt-4">
+                <!-- Completed Column -->
+                <div class="status-section">
+                    <h5 class="status-title">Hoàn Thành</h5>
+                    <ul class="list-group">
+                        @foreach (var project in Model.Where(p => p.Status == (int)ProjectStatus.ToDo))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>
+                                        <a asp-action="Index" asp-controller="ProjectTask"
+                                            asp-route-projectId="@project.Id">
+                                            @project.Name
+                                        </a>
+                                    </h6>
+                                    <p>@project.Description</p>
+                                </div>
+                                <span class="badge badge-pill badge-primary">
+                                    <a href="@Url.Action("Detail", "Project", new { id = project.Id })" class="text-white">
+                                        Hoàn Thành
+                                    </a>
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <!-- To Do Column -->
+            <div class="status-section">
+                <h5 class="status-title">Chưa Hoàn Thành</h5>
+                <ul class="list-group">
+                    @foreach (var project in Model.Where(p => p.Status == (int)ProjectStatus.NotReady))
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6>
+                                    <a asp-action="Index" asp-controller="ProjectTask" asp-route-projectId="@project.Id">
+                                        @project.Name
+                                    </a>
+                                </h6>
+                                <p>@project.Description</p>
+                            </div>
+                            <span class="badge badge-pill badge-warning">
+                                <a href="@Url.Action("Detail", "Project", new { id = project.Id })" class="text-white">
+                                    Chưa Hoàn Thành
+                                </a>
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Toggle dropdown khi click vào nút
+        $('#dropdownMenuButton').click(function () {
+            $('.dropdown').toggleClass('show');
+        });
+
+        // Đóng dropdown khi click ra ngoài
+        $(document).click(function (e) {
+            if (!$(e.target).closest('.dropdown').length) {
+                $('.dropdown').removeClass('show');
+            }
+        });
+
+        // Hiệu ứng khi chọn item
+        $('.dropdown-item').click(function () {
+            // Gỡ bỏ lớp 'selected' khỏi tất cả các item
+            $('.dropdown-item').removeClass('selected');
+
+            // Thêm lớp 'selected' vào item đã chọn
+            $(this).addClass('selected');
+        });
+    });
+</script>

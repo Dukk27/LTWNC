@@ -1,0 +1,174 @@
+@model WNC_G13.Models.Project
+
+<h1>@Model.Name - Quản lý thành viên dự án</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function() {
+            $('#errorMessage').fadeOut('slow');
+        }, 2000); 
+    </script>
+}
+
+<!-- Hiển thị thông báo lỗi nếu có -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+
+    <script>
+        setTimeout(function() {
+            $('#errorMessage').fadeOut('slow');
+        }, 2000); 
+    </script>
+}
+
+<style>
+/* Đặt style cho toàn bộ trang chi tiết dự án */
+    h1 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    /* Style cho danh sách người dùng */
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin-bottom: 20px;
+    }
+
+    ul li {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    p {
+        font-size: 1rem;
+        color: #888;
+    }
+
+    /* Style cho form thêm người dùng */
+    form {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .select-control,
+    input[type="checkbox"] {
+        margin-top: 10px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.2rem;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    /* Style cho nút quay lại */
+    a.btn-secondary {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #6c757d;
+        color: white;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 1rem;
+        margin-top: 15px;
+        transition: background-color 0.3s ease;
+    }
+
+    a.btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+</style>
+
+<!-- Danh sách người dùng đã tham gia -->
+<h3>Người dùng tham gia dự án</h3>
+@if (ViewBag.UsersInProject != null && ((IEnumerable<WNC_G13.Models.User>)ViewBag.UsersInProject).Any())
+{
+     <ul>
+        @foreach (var user in ViewBag.UsersInProject as IEnumerable<WNC_G13.Models.User>)
+        {
+            // Ép kiểu ViewBag.UserProjects về List<UserProject> trước khi tìm UserProject của user hiện tại
+            var userProjectList = ViewBag.UserProjects as List<WNC_G13.Models.UserProject>;
+            var userProject = userProjectList?.FirstOrDefault(up => up.UserId == user.Id && up.ProjectId == Model.Id);
+
+            <li>
+                @user.FullName
+                @if (userProject?.IsPm == true)
+                {
+                    <strong>(Project Manager)</strong>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Không có người dùng trong dự án này.</p>
+}
+
+@if (Model.Status == (int)ProjectStatus.NotReady)
+{            
+    <h3>Thêm người dùng vào dự án</h3>
+    <form asp-action="AddUserToProject" method="post">
+        <input type="hidden" name="projectId" value="@Model.Id" />
+
+        <!-- Chọn người dùng -->
+        <label for="userId">Chọn người dùng:</label>
+        <select name="userId" id="userId" class="form-control">
+            @foreach (var user in ViewBag.AllUsers as IEnumerable<WNC_G13.Models.User>)
+            {
+                <option value="@user.Id">@user.FullName</option>
+            }
+        </select>
+
+        <br />
+
+        <!-- Chọn quyền PM -->
+        <div>
+            <label for="isPm">Làm Project Manager:</label>
+            <input type="checkbox" name="isPm" id="isPm" value = "true" />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Thêm người dùng</button>
+    </form>
+}
+<!-- Quay lại -->
+<!-- Quay lại -->
+<a href="@Url.Action("Index", "ProjectTask", new { projectId = Model.Id })" class="btn btn-secondary mt-3">Quay lại</a>

@@ -1,0 +1,93 @@
+@model IEnumerable<WNC_G13.Models.Project>
+
+@{
+    ViewData["Title"] = "Quản lý dự án";
+}
+
+<h2>Danh Sách Dự Án</h2>
+
+<link rel="stylesheet" href="~/css/styles.css" />
+
+<form method="post" id="deleteForm" style="display:none;">
+    @Html.AntiForgeryToken()
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên dự án</th>
+            <th>Mô tả</th>
+            <th>Người tạo</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody id="projectTableBody">
+        @foreach (var project in Model)
+        {
+            <tr id="projectRow_@project.Id">
+                <td>@project.Name</td>
+                <td>@project.Description</td>
+                <td>@project.CreatedBy</td>
+                <td>@project.Status</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-warning">Chỉnh sửa</a>
+                    <button class="btn btn-danger" onclick="deleteProject(@project.Id)">Xoá</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deleteProject(projectId) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa dự án này?',
+                text: "Hành động này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("DeleteConfirmed", "Project")',
+                        type: 'POST',
+                        data: {
+                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(), // Xử lý AntiForgeryToken
+                            id: projectId
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                // Xóa hàng trong bảng sau khi xóa thành công
+                                $('#projectRow_' + response.projectId).remove();
+                                Swal.fire(
+                                    'Đã xóa!',
+                                    'Dự án đã được xóa thành công.',
+                                    'success'
+                                );
+                            } else {
+                                Swal.fire(
+                                    'Lỗi!',
+                                    'Không thể xóa dự án: ' + response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Lỗi!',
+                                'Có lỗi xảy ra khi xóa dự án.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

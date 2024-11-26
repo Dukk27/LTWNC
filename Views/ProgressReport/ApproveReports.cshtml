@@ -1,0 +1,147 @@
+@model IEnumerable<WNC_G13.Models.ProgressReport>
+
+@{
+    ViewData["Title"] = "Duyệt Báo Cáo Tiến Độ";
+}
+
+<link rel="stylesheet" href="~/css/styles.css" />
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('#successMessage').fadeOut('slow');
+        }, 2000); 
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('#errorMessage').fadeOut('slow');
+        }, 2000); 
+    </script>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên Báo Cáo</th>
+            <th>Người Gửi</th>
+            <th>Trạng Thái</th>
+            <th>Ngày Tạo</th>
+            <th>Thao Tác</th>
+            <th>Chi Tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@report.Title</td>
+                <td>@report.User.FullName</td>
+                <td>
+                    @{
+                        string statusText = report.Status switch
+                        {
+                            "Pending" => "Chờ duyệt",
+                            "Approved" => "Đã duyệt",
+                            "Rejected" => "Đã từ chối",
+                            _ => "Không xác định"
+                        };
+                    }
+                    @statusText
+                </td>
+
+                <td>@report.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                <td>
+                    @if (report.Status != "Approved")
+                    {
+                        <a href="@Url.Action("Approve", "ProgressReport", new { reportId = report.Id })"
+                            class="btn btn-success">Duyệt</a>
+                    }
+                    @if (report.Status != "Rejected")
+                    {
+                        <a href="@Url.Action("Reject", "ProgressReport", new { reportId = report.Id })"
+                            class="btn btn-danger">Từ Chối</a>
+                    }
+                    <button type="button" class="btn btn-danger delete-report" data-id="@report.Id">
+                        Xóa
+                    </button>
+                </td>
+                <td>
+                    <a href="@Url.Action("Detail", "ProgressReport", new { id = report.Id })" class="btn btn-info btn-sm">
+                        Xem Chi Tiết
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Index", "Project", new { organizationId = 1})" class="btn btn-secondary">Quay Lại</a>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $(".delete-report").on("click", function () {
+                const reportId = $(this).data("id");
+
+                Swal.fire({
+                    title: "Bạn có chắc chắn muốn xóa báo cáo này?",
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Xóa",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/ProgressReport/Delete",
+                            type: "POST",
+                            data: { id: reportId },
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire(
+                                        "Đã Xóa!",
+                                        response.message,
+                                        "success"
+                                    );
+                                    // Remove the deleted row from the table
+                                    $(`[data-id=${reportId}]`).closest("tr").remove();
+                                } else {
+                                    Swal.fire(
+                                        "Lỗi!",
+                                        response.message,
+                                        "error"
+                                    );
+                                }
+                            },
+                            error: function () {
+                                Swal.fire(
+                                    "Lỗi!",
+                                    "Đã xảy ra lỗi khi xóa báo cáo.",
+                                    "error"
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

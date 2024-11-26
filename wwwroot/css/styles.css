@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Màu nền nhạt */
+    margin: 20px;
+}
+
+h2 {
+    text-align: center; /* Canh giữa tiêu đề */
+    color: #333; /* Màu chữ tối */
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+}
+
+.table {
+    width: 100%; /* Chiều rộng bảng 100% */
+    border-collapse: collapse; /* Gộp các đường viền */
+    margin: 20px 0; /* Khoảng cách giữa bảng và các phần khác */
+}
+
+.table thead {
+    background-color: #007bff; /* Màu nền cho tiêu đề bảng */
+    color: white; /* Màu chữ cho tiêu đề */
+}
+
+.table th, .table td {
+    border: 1px solid #ddd; /* Đường viền nhạt */
+    padding: 12px; /* Khoảng cách bên trong */
+    text-align: center; /* Căn giữa chữ trong ô */
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Màu nền cho hàng chẵn */
+}
+
+
+.btn {
+    padding: 10px 15px; /* Khoảng cách bên trong cho nút */
+    border: none; /* Bỏ viền */
+    border-radius: 5px; /* Bo góc cho nút */
+    cursor: pointer; /* Thay đổi con trỏ khi di chuột qua nút */
+    text-decoration: none; /* Bỏ gạch chân cho liên kết */
+}
+
+.btn-warning {
+    background-color: #ffc107; /* Màu nền cho nút chỉnh sửa */
+    color: white; /* Màu chữ cho nút chỉnh sửa */
+}
+
+.btn-warning:hover {
+    background-color: #e0a800; /* Màu nền khi di chuột qua nút chỉnh sửa */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Màu nền cho nút xóa */
+    color: white; /* Màu chữ cho nút xóa */
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Màu nền khi di chuột qua nút xóa */
+}
+
+.btn-success {
+    background-color: #28a745; /* Màu nền cho nút thành công */
+    color: white; /* Màu chữ cho nút thành công */
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Màu nền khi di chuột qua nút thành công */
+}
+
+@media screen and (max-width: 768px) {
+    /* Viết các quy tắc CSS dành cho thiết bị có chiều rộng tối đa 768px */
+    
+    .container {
+        max-width: 100%; /* Đảm bảo container chiếm toàn bộ chiều rộng màn hình */
+        padding: 0 15px; /* Thêm khoảng cách bên trong */
+    }
+
+    .row {
+        flex-direction: column; /* Xếp các phần tử theo cột thay vì hàng ngang */
+        gap: 10px; /* Giảm khoảng cách giữa các phần tử */
+    }
+
+    .col {
+        flex: 0 0 100%; /* Chiều rộng của mỗi cột chiếm 100% */
+        margin-bottom: 10px; /* Giảm khoảng cách phía dưới */
+    }
+
+    .product-card {
+        padding: 15px; /* Tăng padding để phù hợp trên màn hình nhỏ */
+    }
+
+    .product-card img {
+        height: auto; /* Để hình ảnh tự động điều chỉnh chiều cao */
+    }
+
+    .btn {
+        width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+        font-size: 1rem; /* Kích thước chữ phù hợp */
+    }
+}
+

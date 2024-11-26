@@ -1,0 +1,68 @@
+@{
+    ViewData["Title"] = "Đăng Nhập";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function() {
+            $('#errorMessage').fadeOut('slow');
+        }, 2000); 
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+
+    <script>
+        setTimeout(function() {
+            $('#errorMessage').fadeOut('slow');
+        }, 2000); 
+    </script>
+}
+
+<h2>Đăng Nhập</h2>
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input name="email" type="email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="password">Mật Khẩu</label>
+        <input name="password" type="password" class="form-control"  />
+    </div>
+    <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+    <p class="mt-3">Chưa có tài khoản? <a href="/Account/Register">Đăng ký ngay</a></p>
+</form>
+
+<style>
+    .form-container {
+        border: 2px solid #007bff;
+        /* Màu viền */
+        border-radius: 10px;
+        /* Bo tròn các góc */
+        padding: 30px;
+        /* Khoảng cách bên trong */
+        max-width: 500px;
+        /* Chiều rộng tối đa */
+        margin: 50px auto;
+        /* Căn giữa form */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        /* Tạo bóng cho khung */
+        background-color: #f8f9fa;
+        /* Màu nền */  
+    }
+    
+    #errorMessage {
+    margin-bottom: 20px;
+    font-size: 16px;
+    text-align: center;
+    }
+</style>

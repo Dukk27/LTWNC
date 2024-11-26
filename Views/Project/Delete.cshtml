@@ -1,0 +1,21 @@
+@model WNC_G13.Models.Project
+
+<h2>Delete Project</h2>
+
+<div>
+    <h4>Are you sure you want to delete this project?</h4>
+    <div>
+        <h5>Project Name: @Model.Name</h5>
+        <p>Description: @Model.Description</p>
+        <p>Created By: @Model.CreatedBy</p>
+        <p>Status: @Model.Status</p>
+    </div>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" asp-route-organizationId="@Model.OrganizationId" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

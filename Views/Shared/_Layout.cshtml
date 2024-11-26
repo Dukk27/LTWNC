@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WNCG13</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <style>
+        /* CSS để làm cho thanh header nằm full trên màn hình */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            margin-top: 60px;
+        }
+
+        /* Định dạng cho footer */
+        footer {
+            width: 100%;
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+            position: relative;
+            bottom: 0;
+        }
+
+        footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        footer h5 {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        footer ul li a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        footer .container>div {
+            flex: 1;
+            padding: 10px;
+        }
+
+        footer .container>div:nth-child(1) {
+            flex: 2;
+        }
+
+        footer ul li a:hover {
+            text-decoration: underline;
+        }
+
+        footer .footer-copyright {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">WNCG13</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Trang Chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="nav-link" href="@Url.Action("UserProfile", "Home")">Xin chào, @User.Identity.Name!</a>
+                            }
+                        </li>
+                        <li class="nav-item">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="nav-link" asp-controller="Account" asp-action="Logout">Đăng Xuất</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Đăng Nhập</a>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="form-container">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+    <footer>
+        <div class="container">
+            <div>
+                <h5>Về Chúng Tôi</h5>
+                <p>WNCG13 là nền tảng giao tiếp và làm việc cộng tác được thiết kế để giúp các doanh nghiệp tối ưu hóa
+                    quy trình làm việc. Chúng tôi cung cấp các công cụ mạnh mẽ, giúp nhóm của bạn hợp tác hiệu quả hơn,
+                    từ quản lý dự án, nhiệm vụ đến theo dõi tiến độ công việc và trao đổi tin nhắn một cách dễ dàng.
+                </p>
+            </div>
+
+            <div>
+                <h5>Liên Kết</h5>
+                <ul>
+                    <li><a href="@Url.Action("Index", "Home")">Trang Chủ</a></li>
+
+                    <li><a href="@Url.Action("Index", "Notification")">Thông Báo</a></li>
+                    <li><a href="@Url.Action("Help", "Home")">Hướng Dẫn</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5>Liên Hệ</h5>
+                <ul>
+                    <li>Email: support@wncg13.com</li>
+                    <li>Hotline: 0123-456-789</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            © 2024 WNC_G13. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

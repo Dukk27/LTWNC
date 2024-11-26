@@ -1,0 +1,50 @@
+@model WNC_G13.Models.ProgressReport
+
+@{
+    ViewData["Title"] = "Chi Tiết Báo Cáo Tiến Độ";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h4>Tiêu Đề Báo Cáo: @Model.Title</h4>
+    </div>
+    <div class="card-body">
+        <p><strong>Người gửi:</strong> @Model.User?.FullName</p>
+        <p><strong>Dự án:</strong> @Model.Project?.Name</p>
+        <p><strong>Nội dung: @Model.Content</strong></p>
+        <p><strong>Trạng thái:</strong>
+            @if (Model.Status == "Pending")
+            {
+                <span class="badge badge-warning">Chưa duyệt</span>
+            }
+            else if (Model.Status == "Approved")
+            {
+                <span class="badge badge-success">Đã duyệt</span>
+            }
+            else if (Model.Status == "Rejected")
+            {
+                <span class="badge badge-danger">Bị từ chối</span>
+            }
+        </p>
+        <p><strong>Ngày tạo:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")</p>
+        @if (Model.ApprovedAt.HasValue)
+        {
+            <p><strong>Ngày duyệt:</strong> @Model.ApprovedAt.Value.ToString("dd/MM/yyyy HH:mm:ss")</p>
+        }
+        <p><strong>Người duyệt:</strong>
+            @if (Model.ApprovedBy.HasValue)
+            {
+                @Model.Approver.FullName
+            }
+            else
+            {
+                <span>Chưa có</span>
+            }
+        </p>
+
+    </div>
+</div>
+
+<a href="@Url.Action("ApproveReports", "ProgressReport")" class="btn btn-secondary mt-3">Quay lại danh sách</a>

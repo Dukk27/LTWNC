@@ -1,0 +1,115 @@
+@model IEnumerable<WNC_G13.Models.ProjectTask>
+
+@{
+    ViewData["Title"] = "Quản lý tất cả các Task";
+}
+
+<link rel="stylesheet" href="~/css/styles.css" />
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Project ID</th>
+            <th>Tên Task</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+            <th>Ngày hoàn thành</th>
+            <th>Độ ưu tiên</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr id="task-@task.Id">
+                <td>@task.Id</td>
+                <td>@task.ProjectId</td>
+                <td>@task.TaskName</td>
+                <td>@task.Description</td>
+                <td>
+                    @{
+                        string status = task.Status switch
+                        {
+                            1 => "Chưa bắt đầu",
+                            2 => "Đang tiến hành",
+                            3 => "Hoàn thành",
+                            4 => "Bị trì hoãn",
+                            _ => "Không xác định"
+                        };
+                    }
+                    @status
+                </td>
+                <td>@task.DueDate?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @{
+                        string priority = task.Priority switch
+                        {
+                            1 => "Thấp",
+                            2 => "Trung bình",
+                            3 => "Cao",
+                            _ => "Không xác định"
+                        };
+                    }
+                    @priority
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@task.Id" class="btn btn-primary btn-sm">Chỉnh sửa</a>
+                    <button onclick="deleteTask(@task.Id)" class="btn btn-danger btn-sm">Xóa</button>
+                    @* <a asp-action="Details" asp-route-id="@task.Id" class="btn btn-info btn-sm">Chi tiết</a> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function deleteTask(taskId) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa nhiệm vụ này?',
+            text: "Hành động này không thể hoàn tác!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("DeleteConfirmed", "ProjectTask")',
+                    type: 'POST',
+                    data: { id: taskId },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire(
+                                'Đã xóa!',
+                                response.message,
+                                'success'
+                            );
+                            // Xóa hàng trong bảng HTML
+                            $("#task-" + taskId).remove();
+                        } else {
+                            Swal.fire(
+                                'Lỗi!',
+                                'Không thể xóa nhiệm vụ: ' + response.message,
+                                'error'
+                            );
+                        }
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Lỗi!',
+                            'Có lỗi xảy ra khi xóa nhiệm vụ.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    }
+</script>

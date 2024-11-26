@@ -1,0 +1,13 @@
+@model WNC_G13.Models.Organization
+
+<h2>Delete Organization</h2>
+
+<div>
+    <h4>Are you sure you want to delete this?</h4>
+    <h4>@Model.Name</h4>
+    <form asp-action="DeleteConfirmed" method="post"> <!-- Đảm bảo asp-action trỏ tới DeleteConfirmed -->
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

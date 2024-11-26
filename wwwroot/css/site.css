@@ -1,0 +1,52 @@
+/* site.css */
+
+/* Tùy chỉnh các ô nhập liệu */
+.input-group {
+  margin-bottom: 15px; /* Khoảng cách giữa các ô */
+}
+
+.form-control {
+  border: 1px solid #ced4da; /* Viền nhạt */
+  border-radius: 5px; /* Bo tròn góc */
+  padding: 10px; /* Khoảng cách bên trong */
+}
+
+.form-control:focus {
+  border-color: #007bff; /* Màu viền khi focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.25); /* Bóng khi focus */
+  outline: none; /* Xóa viền focus mặc định */
+}
+
+/* Căn chỉnh nút đăng nhập, đăng ký */
+.btn-block {
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
+  padding: 10px; /* Khoảng cách bên trong */
+  border-radius: 5px; /* Bo tròn góc */
+}
+
+.notifications {
+  margin-top: 20px;
+}
+
+.notification-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.notification-item.unread {
+  background-color: #f8d7da; /* Màu nền cho thông báo chưa đọc */
+}
+
+.notification-item.read {
+  background-color: #d4edda; /* Màu nền cho thông báo đã đọc */
+}
+
+.badge-danger {
+  background-color: #dc3545;
+}
+
+.badge-success {
+  background-color: #28a745;
+}

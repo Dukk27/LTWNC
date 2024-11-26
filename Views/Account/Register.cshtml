@@ -1,0 +1,61 @@
+@model WNC_G13.Models.User
+
+@if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<h2>Đăng Ký</h2>
+<form asp-action="Register" method="post">
+    <div class="form-group">
+        <label for="FullName">Họ và Tên</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Password">Mật Khẩu</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="PhoneNumber">Số Điện Thoại</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Birthday">Ngày Sinh</label>
+        <input asp-for="Birthday" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Address">Địa Chỉ</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Role">Vai Trò</label>
+        <select asp-for="Role" class="form-control">
+            <option value="1">Admin</option>
+            <option value="2">Người dùng</option>
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Đăng Ký</button>
+    <p class="mt-3">Đã có tài khoản? <a href="/Account/Login">Đăng nhập ngay</a></p>
+</form>
+
+<style>
+    .form-container {
+        border: 2px solid #007bff;
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 500px;
+        margin: 50px auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
+    }
+</style>

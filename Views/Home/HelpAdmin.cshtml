@@ -1,0 +1,133 @@
+@{
+    ViewData["Title"] = "Hướng Dẫn Dành Cho Quản Trị Viên";
+}
+
+<div class="help-container">
+    <h1>@ViewData["Title"]</h1>
+    <p><b>Chào mừng bạn đến với phần hướng dẫn dành cho Admin! Dưới đây là các chức năng mà bạn có thể thực hiện.</b></p>
+
+    <!-- Quản lý tài khoản -->
+    <h2>Quản lý tài khoản</h2>
+    <ul>
+        <li>Thêm tài khoản mới trong phần <b>Quản lý tài khoản</b>.</li>
+        <li>Phân quyền tài khoản thành Admin hoặc User.</li>
+        <li>Chỉnh sửa hoặc xóa tài khoản nếu cần thiết.</li>
+    </ul>
+
+    <!-- Quản lý tổ chức -->
+    <h2>Quản lý tổ chức</h2>
+    <ul>
+        <li>Tạo tổ chức mới cho các dự án trong phần <b>Quản lý tổ chức</b>.</li>
+        <li>Chỉnh sửa thông tin tổ chức, bao gồm tên và kế hoạch đăng ký.</li>
+        <li>Xóa tổ chức không còn sử dụng.</li>
+    </ul>
+
+    <!-- Quản lý dự án -->
+    <h2>Quản lý dự án</h2>
+    <ul>
+        <li>Tạo, chỉnh sửa hoặc xóa dự án trong phần <b>Quản lý dự án</b>.</li>
+        <li>Phân công người dùng vào các dự án cụ thể.</li>
+        <li>Xem chi tiết các dự án để quản lý người tham gia và tiến độ.</li>
+    </ul>
+
+    <!-- Quản lý nhiệm vụ -->
+    <h2>Quản lý nhiệm vụ</h2>
+    <ul>
+        <li>Thêm nhiệm vụ mới trong phần <b>Quản lý nhiệm vụ</b>.</li>
+        <li>Chỉnh sửa thông tin nhiệm vụ như tên, mô tả, độ ưu tiên, và thời hạn.</li>
+        <li>Xóa nhiệm vụ không còn cần thiết.</li>
+    </ul>
+
+    <!-- Duyệt báo cáo tiến độ -->
+    <h2>Duyệt báo cáo tiến độ</h2>
+    <ul>
+        <li>Kiểm tra danh sách báo cáo trong phần <b>Duyệt báo cáo công việc</b>.</li>
+        <li>Duyệt hoặc từ chối báo cáo tiến độ của User.</li>
+        <li>Xem thông báo khi có báo cáo mới từ User.</li>
+    </ul>
+
+    <!-- Quản lý tin nhắn -->
+    <h2>Quản lý tin nhắn</h2>
+    <ul>
+        <li>Kiểm tra và xóa các tin nhắn trong phần <b>Quản lý tin nhắn</b>.</li>
+        <li>Xem lại lịch sử trò chuyện giữa các thành viên.</li>
+        <li>Quản lý các kênh trò chuyện.</li>
+    </ul>
+
+    <a href="@Url.Action("Index", "Home")" class="return-link">Quay lại Trang Chủ</a>
+</div>
+
+
+<style>
+    /* Styling chung cho trang Hướng Dẫn */
+    .help-container {
+        max-width: 1200px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .help-container h1 {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .help-container h2 {
+        font-size: 1.8em;
+        margin-top: 20px;
+        color: #343a40;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+    }
+
+    .help-container ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .help-container ul li {
+        font-size: 1.2em;
+        margin: 10px 0;
+        padding-left: 25px;
+        position: relative;
+        color: #555;
+    }
+
+    .help-container ul li:before {
+        content: "✓";
+        color: #007bff;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.5em;
+    }
+
+    .help-container p {
+        font-size: 1.1em;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .return-link {
+        display: inline-block;
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #007bff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+
+    .return-link:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+</style>

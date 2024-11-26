@@ -1,0 +1,124 @@
+@using System.Security.Claims
+@model IEnumerable<WNC_G13.Models.Organization>
+
+<h2>Danh Sách Tổ Chức</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('.alert').fadeOut('slow');
+        }, 2000); // Ẩn thông báo sau 2 giây
+    </script>
+}
+
+<p>
+    ID Người Dùng: @(User.Identity.IsAuthenticated ? User.FindFirstValue("UserId") : "Chưa đăng nhập")
+</p>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-controller="Organization" asp-action="Create" class="btn btn-primary">Tạo Tổ Chức</a>
+}
+
+<link rel="stylesheet" href="~/css/styles.css" />
+
+<head>
+    <title>@ViewData["Title"]</title>
+</head>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Kế Hoạch Đăng Ký</th>
+            <th>Giới Hạn Lưu Trữ</th>
+            <th>Lưu Trữ Đã Sử Dụng</th>
+            <th>Người tạo</th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Thao tác</th>
+            }
+            <th>Dự Án</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var organization in Model)
+        {
+            <tr id="organization-@organization.Id">
+                <td>@organization.Name</td>
+                <td>@organization.SubscriptionPlan</td>
+                <td>@organization.StorageLimit</td>
+                <td>@organization.UsedStorage</td>
+                <td>@organization.CreatedByNavigation?.FullName</td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@organization.Id" class="btn btn-warning">Chỉnh Sửa</a>
+                        <button class="btn btn-danger" onclick="deleteOrganization(@organization.Id)">Xóa</button>
+                        <a asp-action="Detail" asp-route-id="@organization.Id" class="btn btn-info">Chi Tiết</a>
+                    </td>
+                }
+                <td>
+                    <a asp-controller="Project" asp-action="Index" asp-route-organizationId="@organization.Id"
+                        class="btn btn-success">
+                        Dự Án
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deleteOrganization(orgId) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa tổ chức này?',
+                text: "Hành động này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Organization")',
+                        type: 'POST',
+                        data: { id: orgId },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire(
+                                    'Đã Xóa!',
+                                    response.message,
+                                    'success'
+                                );
+                                // Xóa hàng khỏi bảng
+                                $('#organization-' + orgId).remove();
+                            } else {
+                                Swal.fire(
+                                    'Lỗi!',
+                                    response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Lỗi!',
+                                'Đã xảy ra lỗi khi xóa tổ chức.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+    </script>

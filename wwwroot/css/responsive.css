@@ -1,0 +1,150 @@
+/* site.css */
+
+/* Thiết lập viewport cho responsive */
+meta[name="viewport"] {
+    content: "width=device-width, initial-scale=1.0";
+}
+
+/* Đảm bảo kiểu chữ trong toàn bộ ứng dụng */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fa;
+}
+
+/* Đặt style cho các tiêu đề */
+h1, h2, h3 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Style cho các nút */
+button, .btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    background-color: #218838;
+}
+
+/* Style cho danh sách người dùng và các phần tử trong sidebar */
+.project-users {
+    margin-top: 20px;
+}
+
+.project-users .list-group {
+    padding-left: 0;
+    list-style: none;
+}
+
+.project-users .list-group-item {
+    font-size: 1rem;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-users .sidebar-header {
+    font-size: 1.2rem;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+/* Cấu hình cho các project và task */
+.project-details, .task-list {
+    margin-top: 30px;
+}
+
+/* Responsive cho các màn hình nhỏ */
+@media (max-width: 768px) {
+    /* Chỉnh sửa tiêu đề và các phần tử để không quá rộng */
+    h1 {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .project-users .list-group-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    /* Điều chỉnh phần thông tin người dùng */
+    .pm-role {
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+
+    /* Điều chỉnh margin và padding cho các form và input */
+    form {
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    label {
+        margin-right: 10px;
+        font-size: 1rem;
+    }
+
+    .select-control, input[type="checkbox"] {
+        margin-top: 10px;
+    }
+
+    /* Đảm bảo rằng nút "Thêm Thành Viên" không chiếm quá nhiều không gian */
+    .btn-sm {
+        width: 100%;
+    }
+}
+
+/* Responsive cho các màn hình rất nhỏ (di động nhỏ hơn 480px) */
+@media (max-width: 480px) {
+    /* Giảm kích thước chữ cho các phần tử */
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    .project-users .list-group-item {
+        padding: 8px 15px;
+    }
+
+    .sidebar-header {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    /* Điều chỉnh các input và checkbox */
+    .select-control, input[type="checkbox"] {
+        font-size: 0.9rem;
+    }
+
+    .pm-role {
+        font-size: 0.8rem;
+    }
+}
+
+/* Xử lý cho các trang chi tiết và quản lý thành viên */
+@media (min-width: 768px) {
+    .project-users {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .project-users .list-group-item {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+}

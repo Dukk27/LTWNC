@@ -1,0 +1,20 @@
+@model WNC_G13.Models.Project
+
+<h2>Thêm Người Dùng Vào Dự Án: @Model.Name</h2>
+
+<form asp-action="AddUserToProject" method="post">
+    <input type="hidden" name="projectId" value="@ViewBag.ProjectId" />
+
+    <div class="form-group">
+        <label>Chọn Người Dùng:</label>
+        <select name="selectedUserIds" multiple class="form-control">
+            @foreach (var user in ViewBag.AvailableUsers)
+            {
+                <option value="@user.Id">@user.FullName</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm Người Dùng</button>
+    <a href="@Url.Action("Details", new { id = ViewBag.ProjectId })" class="btn btn-secondary">Hủy</a>
+</form>

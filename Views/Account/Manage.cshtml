@@ -1,0 +1,94 @@
+@model IEnumerable<WNC_G13.Models.User>
+
+@{
+    ViewData["Title"] = "Quản Lý Tài Khoản";
+}
+
+<link rel="stylesheet" href="~/css/styles.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Thêm SweetAlert2 -->
+
+<h2>Quản Lý Tài Khoản</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Đầy Đủ</th>
+            <th>Email</th>
+            <th>Vai Trò</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@(user.Role == Role.AdminRole ? "Quản Trị" : "Người Dùng")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning">Chỉnh Sửa</a>
+                    <button class="btn btn-danger delete-btn" data-id="@user.Id">Xóa</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.delete-btn').click(function () {
+            var userId = $(this).data('id');
+
+            // Sử dụng SweetAlert để xác nhận việc xóa
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa tài khoản này?',
+                text: "Hành động này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu xác nhận xóa, thực hiện gọi AJAX
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Account")', // Action và Controller cần xác định chính xác
+                        type: 'POST',
+                        data: { id: userId },
+                        success: function (response) {
+                            if (response.success) {
+                                // Nếu xóa thành công, ẩn dòng bảng và hiển thị thông báo
+                                $('#userRow_' + userId).remove();
+                                Swal.fire(
+                                    'Đã xóa!',
+                                    'Tài khoản đã được xóa thành công.',
+                                    'success'
+                                ).then(() => {
+                                    // Tải lại trang sau khi xóa thành công
+                                    location.reload();  // Reload lại trang
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Lỗi!',
+                                    'Đã xảy ra lỗi: ' + response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Lỗi!',
+                                'Đã xảy ra lỗi khi cố gắng xóa tài khoản.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,75 @@
+@model WNC_G13.Models.ProjectTask
+
+@{
+    ViewBag.Title = "Dashboard - Thống Kê Trạng Thái Công Việc";
+}
+
+<h1>Thống Kê Trạng Thái Công Việc Của Tất Cả Các Dự Án</h1>
+
+<div class="row">
+    <!-- Cột bên trái: Bảng thống kê -->
+    <div class="col-md-6">
+        <div class="task-status mt-4">
+            <div class="status-summary">
+                <h5 class="status-summary-title">Tổng Kết Trạng Thái Công Việc</h5>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Chưa bắt đầu</span>
+                        <span class="badge badge-warning">@ViewBag.TaskStatusCount.NotReady</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Cần thực hiện</span>
+                        <span class="badge badge-info">@ViewBag.TaskStatusCount.ToDo</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Đang tiến hành</span>
+                        <span class="badge badge-primary">@ViewBag.TaskStatusCount.InProgress</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Hoàn thành</span>
+                        <span class="badge badge-success">@ViewBag.TaskStatusCount.Completed</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Bị trì hoãn</span>
+                        <span class="badge badge-secondary">@ViewBag.TaskStatusCount.Delayed</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cột bên phải: Biểu đồ -->
+    <div class="col-md-6">
+        <canvas id="taskStatusChart"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('taskStatusChart').getContext('2d');
+        var taskStatusChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Chưa bắt đầu', 'Cần thực hiện', 'Đang tiến hành', 'Hoàn thành', 'Bị trì hoãn'],
+                datasets: [{
+                    label: 'Số lượng công việc',
+                    data: [
+                        @ViewBag.TaskStatusCount.NotReady,
+                        @ViewBag.TaskStatusCount.ToDo,
+                        @ViewBag.TaskStatusCount.InProgress,
+                        @ViewBag.TaskStatusCount.Completed,
+                        @ViewBag.TaskStatusCount.Delayed
+                    ],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF5733'],
+                    borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF5733'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,  // Biểu đồ sẽ tự động điều chỉnh khi thay đổi kích thước
+                maintainAspectRatio: true,  
+            }
+        });
+    </script>
+}

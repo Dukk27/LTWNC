@@ -1,0 +1,35 @@
+@model WNC_G13.Models.Project
+
+<h2>Chỉnh Sửa Dự Án</h2>
+
+<link rel="stylesheet" href="~/css/styles.css" />
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="OrganizationId" value="@ViewBag.OrganizationId"/>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Tên dự án</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" class="control-label">Trạng thái</label>
+        <select asp-for="Status" class="form-control">
+            <option value="0">Hoạt động</option> <!-- Giá trị 0 cho Active -->
+            <option value="1">Hoàn thành</option> <!-- Giá trị 1 cho Inactive -->
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Lưu" class="btn btn-primary" />
+       <a asp-action="AllProjects" class="btn btn-secondary">Huỷ</a>
+    </div>
+</form>

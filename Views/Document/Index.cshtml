@@ -1,0 +1,192 @@
+@model IEnumerable<WNC_G13.Models.Document>
+
+@{
+    ViewData["Title"] = "Danh Sách Tài Liệu";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<style>
+    /* Đảm bảo các đường dẫn dài tự động xuống dòng */
+    .word-wrap {
+        word-wrap: break-word;
+        white-space: normal;
+        /* Cho phép từ dài bị cắt xuống dòng */
+        overflow-wrap: break-word;
+        /* Đảm bảo từ dài sẽ được cắt xuống dòng */
+    }
+
+    /* Tùy chỉnh bảng */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        /* Đảm bảo không có khoảng cách giữa các ô */
+        table-layout: fixed;
+        /* Giới hạn chiều rộng các cột và cho phép cắt dòng dài */
+    }
+
+    /* Căn giữa các cột */
+    th,
+    td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        /* Căn giữa nội dung của các cột */
+    }
+
+    /* Tạo hiệu ứng cho các hàng trong bảng */
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Đảm bảo các nút không bị dính nhau */
+    form.delete-form {
+        display: inline-block;
+    }
+
+    button {
+        margin: 0 5px;
+        /* Khoảng cách giữa các nút */
+    }
+
+    /* Điều chỉnh chiều rộng nút */
+    .btn {
+        padding: 10px;
+        font-size: 1rem;
+    }
+</style>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table table-bordered table-hover mt-3">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Tên Tài Liệu</th>
+            <th scope="col">Đường dẫn</th>
+            <th scope="col">Dự Án</th>
+            <th scope="col">Nhiệm Vụ</th>
+            <th scope="col">Người Tải Lên</th>
+            <th scope="col">Ngày Tải Lên</th>
+            <th scope="col">Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var document in Model)
+            {
+                <tr id="row_@document.Id">
+                    <td>@document.DocumentName</td>
+                    <td class="word-wrap">@document.DocumentUrl</td> <!-- Áp dụng class word-wrap ở đây -->
+                    <td>@document.Project?.Name </td>
+                    <td>@document.Task?.TaskName </td>
+                    <td>@document.UploadedByNavigation?.FullName </td>
+                    <td>@document.UploadedAt?.ToString("g") </td>
+                    <td>
+                        <a href="@Url.Action("Download", "Document", new { documentId = document.Id })"
+                            class="btn btn-success btn-sm">
+                            <i class="fas fa-download"></i> Tải Xuống
+                        </a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <form method="post" asp-action="Delete" asp-controller="Document" class="delete-form"
+                                data-id="@document.Id" data-project="@document.ProjectId">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="documentId" value="@document.Id" />
+                                <input type="hidden" name="projectId" value="@document.ProjectId" />
+                                <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" class="text-center">Không có tài liệu nào được tìm thấy.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('.delete-form').on('submit', function (e) {
+                e.preventDefault(); // Ngăn form nạp lại trang
+
+                const form = $(this);
+                const documentId = form.data('id');
+                const projectId = form.data('project');
+
+                // Sử dụng SweetAlert để xác nhận trước khi xóa
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn xóa tài liệu này?',
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Nếu người dùng xác nhận, thực hiện xóa qua AJAX
+                        $.ajax({
+                            url: form.attr('action'),
+                            method: 'POST',
+                            data: form.serialize(),
+                            success: function (response) {
+                                if (response.success) {
+                                    // Sử dụng SweetAlert để thông báo thành công
+                                    Swal.fire(
+                                        'Đã xóa!',
+                                        'Tài liệu đã được xóa thành công.',
+                                        'success'
+                                    );
+
+                                    // Xóa dòng tương ứng trong bảng
+                                    $('#row_' + documentId).remove();
+                                } else {
+                                    // Nếu có lỗi, hiển thị thông báo lỗi
+                                    Swal.fire(
+                                        'Lỗi!',
+                                        response.message || 'Không thể xóa tài liệu.',
+                                        'error'
+                                    );
+                                }
+                            },
+                            error: function () {
+                                // Hiển thị thông báo lỗi nếu xảy ra lỗi trong AJAX
+                                Swal.fire(
+                                    'Lỗi!',
+                                    'Có lỗi xảy ra khi xóa tài liệu.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

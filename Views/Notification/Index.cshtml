@@ -1,0 +1,238 @@
+@model IEnumerable<WNC_G13.Models.Notification>
+
+@{
+    ViewData["Title"] = "Thông Báo";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('#successMessage').fadeOut('slow');
+        }, 2000);
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('#errorMessage').fadeOut('slow');
+        }, 2000);
+    </script>
+}
+
+<!-- Add buttons for Mark All as Read and Delete All, aligned to the right -->
+<div class="mb-3 text-right">
+    <button id="markAllAsRead" class="btn btn-primary">Đánh dấu tất cả đã đọc</button>
+    <button id="deleteAll" class="btn btn-danger">Xóa tất cả</button>
+</div>
+
+<!-- Display notifications -->
+<div class="notifications">
+    @foreach (var notification in Model)
+    {
+        <div class="notification @((notification.IsRead ? "read" : "unread"))" id="notification-@notification.Id">
+            <div class="notification-content">
+                <p>@notification.Message</p>
+                <small>@notification.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")</small>
+            </div>
+            <div class="action-buttons">
+                @if (notification.IsRead)
+                {
+                    <span class="text-success"><i class="fas fa-check-circle"></i> Đã đọc</span>
+                }
+                else
+                {
+                    <a href="javascript:void(0)" class="btn btn-primary btn-sm mark-as-read" data-id="@notification.Id">
+                        Đánh dấu là đã đọc
+                    </a>
+                }
+                <a href="javascript:void(0)" class="btn btn-danger btn-sm delete-notification" data-id="@notification.Id">
+                    Xóa
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Add custom styles -->
+<style>
+    .sidebar {
+        background-color: #f8f9fa;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .badge {
+        background-color: red;
+        color: white;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 5px 10px;
+    }
+
+    .notifications {
+        margin-top: 20px;
+    }
+
+    .notification {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .notification.read {
+        background-color: #f0f0f0;
+    }
+
+    .notification.unread {
+        background-color: #ffffff;
+    }
+
+    .notification-content {
+        flex: 1;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .action-buttons .text-success {
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .action-buttons .text-success i {
+        color: green;
+    }
+
+    .mb-3.text-right {
+        text-align: right;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Đánh dấu tất cả thông báo là đã đọc
+        $('#markAllAsRead').click(function () {
+            $.ajax({
+                url: '@Url.Action("MarkAllAsRead", "Notification")',
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        $('.notification').addClass('read').removeClass('unread');
+                        $('.mark-as-read').hide();
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra khi đánh dấu tất cả thông báo đã đọc.");
+                }
+            });
+        });
+
+        // Xóa tất cả thông báo
+        $('#deleteAll').click(function () {
+            $.ajax({
+                url: '@Url.Action("DeleteAll", "Notification")',
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        $('.notification').remove();
+                        alert("Tất cả thông báo đã được xóa!");
+                    } else {
+                        alert("Có lỗi xảy ra khi xóa tất cả thông báo.");
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra khi xóa tất cả thông báo.");
+                }
+            });
+        });
+
+        // Đánh dấu thông báo là đã đọc
+        $('.mark-as-read').click(function () {
+            var notificationId = $(this).data('id');
+
+            $.ajax({
+                url: '@Url.Action("MarkAsRead", "Notification")',
+                type: 'POST',
+                data: { notificationId: notificationId },
+                success: function (response) {
+                    if (response.success) {
+                        $('#notification-' + notificationId)
+                            .addClass('read')
+                            .removeClass('unread')
+                            .find('.mark-as-read')
+                            .replaceWith('<span class="text-success"><i class="fas fa-check-circle"></i> Đã đọc</span>');
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra khi đánh dấu thông báo đã đọc.");
+                }
+            });
+        });
+
+        // Xóa thông báo
+        $('.delete-notification').click(function () {
+            var notificationId = $(this).data('id');
+
+            $.ajax({
+                url: '@Url.Action("Delete", "Notification")',
+                type: 'POST',
+                data: { notificationId: notificationId },
+                success: function (response) {
+                    if (response.success) {
+                        $('#notification-' + notificationId).remove();
+                        alert("Thông báo đã được xóa!");
+                    } else {
+                        alert("Có lỗi xảy ra khi xóa thông báo.");
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra khi xóa thông báo.");
+                }
+            });
+        });
+
+        $('#markAllAsRead').click(function () {
+            $.ajax({
+                url: '@Url.Action("MarkAllAsRead", "Notification")', // Đảm bảo đường dẫn đúng với action trong controller
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        // Cập nhật tất cả thông báo thành "đã đọc"
+                        $('.notification').each(function () {
+                            $(this).addClass('read').removeClass('unread');
+                            $(this).find('.mark-as-read').replaceWith('<span class="text-success"><i class="fas fa-check-circle"></i> Đã đọc</span>');
+                        });
+                        // Ẩn nút "Đánh dấu tất cả đã đọc"
+                        $('#markAllAsRead').hide();
+                    } else {
+                        alert('Không thể đánh dấu tất cả thông báo là đã đọc');
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra khi đánh dấu tất cả thông báo đã đọc.");
+                }
+            });
+        });
+    });
+</script>

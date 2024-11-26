@@ -1,0 +1,324 @@
+/* Định dạng cho sidebar */
+.sidebar {
+  background-color: #f8f9fa;
+  padding: 20px;
+  height: 100vh;
+}
+
+.sidebar-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.nav-link {
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-link.active {
+  color: #007bff;
+}
+
+.nav-link .badge {
+  font-size: 0.8em;
+  margin-left: 10px;
+}
+
+/* Định dạng phần chính */
+.container-fluid {
+  font-family: Arial, sans-serif;
+}
+
+h3 {
+  font-weight: bold;
+}
+
+.task-status {
+  margin-top: 20px;
+}
+
+.status-section {
+  margin-bottom: 30px;
+}
+
+.status-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.list-group-item h6 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.list-group-item p {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0 0;
+}
+
+.badge {
+  padding: 8px 10px;
+  font-size: 0.8em;
+  font-weight: normal;
+  color: #fff;
+  border-radius: 12px;
+}
+
+.badge-primary {
+  background-color: #007bff;
+}
+
+/* Định dạng nút bấm */
+.btn-primary {
+  background-color: #ff7f50;
+  border: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  border-radius: 5px;
+}
+
+.btn-primary:hover {
+  background-color: #ff6347;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+/* Định dạng phần thông báo và label */
+.label {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 0.8em;
+  color: #fff;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.label-orange {
+  background-color: #ff7f50;
+}
+
+.label-blue {
+  background-color: #007bff;
+}
+
+.label-green {
+  background-color: #28a745;
+}
+
+.label-red {
+  background-color: #dc3545;
+}
+
+/* Định dạng dropdown */
+.dropdown-menu {
+  display: none; /* Ẩn dropdown menu mặc định */
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease; /* Thêm hiệu ứng mờ dần */
+  max-height: 300px; /* Giới hạn chiều cao */
+  overflow-y: auto; /* Thêm thanh cuộn dọc nếu danh sách dài */
+  width: 100%; /* Đảm bảo dropdown không bị nhỏ hơn nút */
+}
+
+/* Hiển thị dropdown khi được click */
+.dropdown.show .dropdown-menu {
+  display: block; /* Hiện dropdown khi class 'show' được thêm */
+  opacity: 1;
+}
+
+/* Hiệu ứng hover vào các item trong dropdown */
+.dropdown-item {
+  padding: 8px 16px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Thêm hiệu ứng chuyển màu và di chuyển */
+}
+
+.dropdown-item:hover {
+  background-color: #007bff;
+  color: white;
+  transform: scale(1.05); /* Hiệu ứng phóng to nhẹ */
+}
+
+/* Hiệu ứng khi item được chọn (có thể thêm class 'selected') */
+.dropdown-item.selected {
+  background-color: #28a745; /* Màu khi chọn */
+  color: white;
+  font-weight: bold;
+}
+
+.pm-role {
+  color: #ff5733; /* Màu cam cho từ "PM" */
+  font-weight: bold;
+}
+.sidebar-header {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.search-bar {
+  border: 1px solid #ddd; /* Viền mỏng */
+  border-radius: 8px; /* Bo góc */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+}
+
+.search-bar form {
+  display: flex;
+  width: 100%; /* Chiều rộng full */
+}
+
+.search-bar input[type="text"] {
+  flex: 1; /* Lấp đầy không gian trống */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px 0 0 8px; /* Bo góc trái */
+  outline: none; /* Xóa viền mặc định khi focus */
+  transition: box-shadow 0.3s ease;
+}
+
+.search-bar input[type="text"]:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng focus */
+  border-color: #007bff; /* Màu viền khi focus */
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 0 8px 8px 0; /* Bo góc phải */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3; /* Đổi màu khi hover */
+}
+
+/* Responsive cho sidebar */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    height: auto; /* Chiều cao tự động */
+    padding: 10px; /* Giảm padding */
+  }
+
+  .sidebar-header {
+    font-size: 1.2rem; /* Giảm kích thước font */
+    text-align: center; /* Canh giữa */
+  }
+
+  .nav-link {
+    font-size: 14px; /* Giảm kích thước font */
+  }
+
+  .nav-link .badge {
+    display: none; /* Ẩn badge để giao diện gọn gàng hơn */
+  }
+}
+
+/* Responsive cho container */
+@media screen and (max-width: 768px) {
+  .container-fluid {
+    padding: 0 10px; /* Giảm padding */
+  }
+
+  h3 {
+    font-size: 1.2rem; /* Giảm kích thước tiêu đề */
+    text-align: center; /* Canh giữa tiêu đề */
+  }
+}
+
+/* Responsive cho các nút bấm */
+@media screen and (max-width: 768px) {
+  .btn-primary {
+    width: 100%; /* Nút bấm chiếm toàn bộ chiều rộng */
+    padding: 12px 0; /* Tăng padding để dễ bấm */
+    font-size: 1rem; /* Kích thước font lớn hơn */
+  }
+}
+
+/* Responsive cho dropdown */
+@media screen and (max-width: 768px) {
+  .dropdown-menu {
+    width: 90%; /* Dropdown chiếm 90% chiều rộng */
+    left: 5%; /* Canh giữa trên màn hình nhỏ */
+  }
+}
+
+/* Responsive cho search bar */
+@media screen and (max-width: 768px) {
+  .search-bar {
+    box-shadow: none; /* Ẩn hiệu ứng bóng */
+    padding: 5px; /* Giảm padding */
+  }
+
+  .search-bar input[type="text"] {
+    font-size: 14px; /* Giảm kích thước font */
+    padding: 8px; /* Giảm padding */
+  }
+
+  .search-bar button {
+    font-size: 14px; /* Giảm kích thước font */
+    padding: 8px; /* Giảm padding */
+  }
+}
+
+/* Responsive cho danh sách nhiệm vụ */
+@media screen and (max-width: 768px) {
+  .list-group-item {
+    flex-direction: column; /* Xếp chồng các mục */
+    align-items: flex-start; /* Canh trái */
+  }
+
+  .list-group-item h6 {
+    font-size: 14px; /* Giảm kích thước font */
+  }
+
+  .list-group-item p {
+    font-size: 12px; /* Giảm kích thước font */
+  }
+}
+
+/* Responsive cho badge */
+@media screen and (max-width: 768px) {
+  .badge {
+    font-size: 0.7em; /* Giảm kích thước badge */
+    padding: 5px; /* Giảm padding */
+  }
+}

@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "Hướng Dẫn Dành Cho Người Dùng";
+}
+
+<div class="help-container">
+    <h1>@ViewData["Title"]</h1>
+    <p><b>Chào mừng bạn đến với phần hướng dẫn dành cho Người Dùng!</b></p>
+
+    <h2>Tham gia dự án</h2>
+    <ul>
+        <li>Kiểm tra danh sách dự án được phân công trong phần <b>Danh sách dự án</b>.</li>
+    </ul>
+
+    <h2>Xem thống kê dự án</h2>
+    <ul>   
+        <li>Chọn <b>Thống kê dự án</b> và xem biểu đồ thống kê dự án.</li>
+    </ul>
+
+    <h2>Gửi báo cáo tiến độ</h2>
+    <ul>
+        <li>Chọn dự án muốn gửi báo cáo từ <b>Danh sách dự án</b>.</li>
+        <li>Chọn <b>Báo cáo công việc</b>, điền đầy đủ thông tin và gửi báo cáo để Admin duyệt.</li>
+    </ul>
+
+    <h2>Trò chuyện</h2>
+    <ul>
+        <li>Chọn <b>Trò chuyện</b> để chat cùng mọi người.</li>
+    </ul>
+
+    <h2>Cập nhật thông tin cá nhân</h2>
+    <ul>
+        <li>Cập nhật thông tin tài khoản như họ tên, email, mật khẩu trong phần <b>Cài đặt</b>.</li>
+    </ul>
+
+    <a href="@Url.Action("Index", "Home")" class="return-link">Quay lại Trang Chủ</a>
+</div>
+
+
+<style>
+    /* Styling chung cho trang Hướng Dẫn */
+    .help-container {
+        max-width: 1200px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .help-container h1 {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .help-container h2 {
+        font-size: 1.8em;
+        margin-top: 20px;
+        color: #343a40;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+    }
+
+    .help-container ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .help-container ul li {
+        font-size: 1.2em;
+        margin: 10px 0;
+        padding-left: 25px;
+        position: relative;
+        color: #555;
+    }
+
+    .help-container ul li:before {
+        content: "✓";
+        color: #007bff;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 1.5em;
+    }
+
+    .help-container p {
+        font-size: 1.1em;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .return-link {
+        display: inline-block;
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #007bff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+
+    .return-link:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+</style>

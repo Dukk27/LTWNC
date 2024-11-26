@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Trang Chủ";
+}
+
+<h1>Chào Mừng Đến Với Ứng Dụng Quản Trị</h1>
+<h4>Hãy chọn tính năng ở bên dưới:</h4>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-lg">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Quản Lý Tổ Chức</h5>
+                <p class="card-text">Quản lý các tổ chức một cách dễ dàng và hiệu quả.</p>
+                <a href="@Url.Action("Index", "Organization")" class="btn btn-primary mt-auto">Xem</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-lg">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Quản Lý Dự Án</h5>
+                <p class="card-text">Quản lý các dự án một cách trực quan.</p>
+                <a href="@Url.Action("AllProjects", "Project")" class="btn btn-primary mt-auto">Xem</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-lg">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Quản Lý Tài Khoản</h5>
+                <p class="card-text">Quản lý các tài khoản người dùng nhanh chóng.</p>
+                <a href="@Url.Action("Manage", "Account")" class="btn btn-primary mt-auto">Xem</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-lg">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Quản Lý Nhiệm Vụ</h5>
+                <p class="card-text">Quản lý các nhiệm vụ trong dự án một cách hiệu quả.</p>
+                <a href="@Url.Action("AllTasks", "ProjectTask")" class="btn btn-primary mt-auto">Xem</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-lg">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Quản Lý Tin Nhắn</h5>
+                <p class="card-text">Quản lý tin nhắn và giao tiếp trong ứng dụng.</p>
+                <a href="@Url.Action("MessageManagement", "Chat")" class="btn btn-primary mt-auto">Xem</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-lg">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Quản Lý Tài Liệu</h5>
+                <p class="card-text">Quản lý tài liệu một cách dễ dàng.</p>
+                <a href="@Url.Action("Index", "Document")" class="btn btn-primary mt-auto">Xem</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f7f8fc;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 2.5rem;
+    }
+
+    h4 {
+        color: #555;
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 1.25rem;
+    }
+
+    h5, p {
+        text-align: center;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 320px;
+        height: 100%;
+        border-radius: 15px;
+        background-color: #fff;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card-body {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #777;
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #0069d9;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 1rem;
+        border: none;
+        transition: background-color 0.3s ease;
+        margin-top: auto;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+</style>

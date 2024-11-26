@@ -1,0 +1,150 @@
+@model WNC_G13.Models.ProgressReport
+
+@{
+    ViewData["Title"] = "Gửi Báo Cáo Tiến Độ";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('#successMessage').fadeOut('slow');
+        }, 2000); 
+    </script>
+}
+
+<style>
+    /* Tổng thể container */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+    }
+
+    /* Tiêu đề */
+    h2 {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    /* Phần thông báo thành công */
+    .alert {
+        margin-bottom: 20px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    /* Form */
+    form {
+        margin-top: 20px;
+    }
+
+    /* Các trường trong form */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    /* Label của các trường */
+    label {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Các input và textarea */
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        background-color: #f9f9f9;
+    }
+
+    /* Định dạng cho nút submit */
+    button.btn-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Quay lại */
+    a.btn-secondary {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        text-align: center;
+        background-color: #6c757d;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-top: 15px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    a.btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    /* Validation error messages */
+    .text-danger {
+        font-size: 14px;
+        color: red;
+        margin-top: 5px;
+    }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="ProjectId" value="@ViewBag.ProjectId" />
+
+    <div class="form-group">
+        <label for="Title">Tiêu Đề Báo Cáo</label>
+        <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề báo cáo" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Content">Nội Dung Báo Cáo</label>
+        <textarea asp-for="Content" class="form-control" rows="4" placeholder="Nhập nội dung báo cáo"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Status" style="display: none;">Trạng Thái</label>
+        <select asp-for="Status" class="form-control" style="display: none;">
+            <option value="Pending">Chưa Duyệt</option>
+            <option value="Approved">Đã Duyệt</option>
+            <option value="Rejected">Bị Từ Chối</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Gửi Báo Cáo</button>
+</form>
+
+<a href="@Url.Action("Index", "ProjectTask", new { projectId = ViewBag.ProjectId })" class="btn btn-secondary">Quay
+    Lại</a>

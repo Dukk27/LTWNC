@@ -1,0 +1,37 @@
+@model WNC_G13.Models.Organization
+
+<h2>Chỉnh Sửa Tổ Chức</h2>
+
+<link rel="stylesheet" href="~/css/styles.css" />
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name">Tên tổ chức</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SubscriptionPlan">Kế hoạch đăng ký</label>
+        <input asp-for="SubscriptionPlan" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="StorageLimit">Giới hạn lưu trữ</label>
+        <input asp-for="StorageLimit" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="UsedStorage">Lưu trữ đã sử dụng</label>
+        <input asp-for="UsedStorage" class="form-control" />
+    </div>
+    @* <div class="form-group">
+        <label asp-for="CreatedAt"></label>
+        <input asp-for="CreatedAt" class="form-control" />
+    </div> *@
+    <div class="form-group">
+        <label asp-for="CreatedBy">Người tạo</label>
+        <input asp-for="CreatedBy" class="form-control" value="@ViewBag.UserId" readonly />
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+
